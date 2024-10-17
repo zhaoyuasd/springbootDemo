@@ -1,0 +1,29 @@
+#xxl.job.admin.addresses: http://192.168.1.179:8080/xxl-job-admin
+#xxl.job.executor.appname: xxl-job-executor-sample
+server.port: 8449
+
+test.value: test_${user.name}
+
+
+spring:
+  # ???????
+  datasource:
+    # ???????
+    type: com.zaxxer.hikari.HikariDataSource
+    # ????????????
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.1.173:3306/test?autoReconnect=true&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
+    username: root
+    password: london123
+  redis:
+    host: 192.168.0.200
+    port: 6379
+    password: netopstec
+    database: 8
+
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type=auto:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
