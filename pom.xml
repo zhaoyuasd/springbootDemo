@@ -21,6 +21,13 @@
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>io.github.liubsyy</groupId>
+            <artifactId>FindInstancesOfClass</artifactId>
+            <version>1.0.4</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
@@ -202,11 +209,7 @@
             <version>3.1.19</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.netopstec.erp.pdd.ktt</groupId>
-            <artifactId>pdd-ktt-sdk</artifactId>
-            <version>20231027</version>
-        </dependency>
+
 
         <dependency>
             <groupId>cn.hutool</groupId>
@@ -248,16 +251,11 @@
             <dependency>
                 <groupId>com.sun</groupId>
                 <artifactId>tools</artifactId>
-                <version>${jdk.version}</version>
+                <version>1.8</version>
                 <scope>system</scope>
                 <systemPath>${java.home}/../lib/tools.jar</systemPath>
             </dependency>
 
-        <dependency>
-            <groupId>com.netopstec.erp.top</groupId>
-            <artifactId>top-sdk</artifactId>
-            <version>2.0.18</version>
-        </dependency>
 
         <dependency>
             <groupId>org.apache.commons</groupId>
