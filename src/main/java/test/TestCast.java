@@ -1,3 +1,5 @@
+package test;
+
 import cn.hutool.core.bean.BeanUtil;
 
 /**

@@ -1,3 +1,5 @@
+package test;
+
 import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSON;
 
@@ -45,5 +47,12 @@ public class TestDate {
         list.add("5-1");
         Collections.sort(list);
         System.out.println(JSON.toJSONString(list));
+
+        LocalDateTime nowTime = LocalDateTime.now();
+        LocalDateTime startMonth = LocalDateTime.of(nowTime.with(TemporalAdjusters.firstDayOfMonth()).toLocalDate(), LocalTime.MIN);
+        // 月末
+        LocalDateTime endMonth = LocalDateTime.of(nowTime.with(TemporalAdjusters.lastDayOfMonth()).toLocalDate(), LocalTime.MAX);
+        System.out.println(startMonth);
+        System.out.println(endMonth);
     }
 }
