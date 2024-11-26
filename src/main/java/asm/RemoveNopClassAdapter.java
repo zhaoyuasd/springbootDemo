@@ -9,7 +9,8 @@ package asm;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 
-import static jdk.internal.org.objectweb.asm.Opcodes.ASM4;
+import static org.objectweb.asm.Opcodes.ASM4;
+
 
 public  class RemoveNopClassAdapter extends ClassVisitor {
     public RemoveNopClassAdapter(ClassVisitor cv) {

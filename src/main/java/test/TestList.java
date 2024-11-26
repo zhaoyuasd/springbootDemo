@@ -20,8 +20,20 @@ public class TestList {
     public static void main(String[] args) {
 
        // test1();
-        testEquals();
+       // testEquals();
+       //testRetain();
+      int a = 5;
+      int b = 3;
+        System.out.println( a + b);
+    }
 
+    private static void testRetain() {
+        List<Integer> list1 = new ArrayList<>();
+        list1.add(1);list1.add(2);
+        list1.add(3);list1.add(4);
+        List<Integer> list2 = new ArrayList<>();
+        list2.add(1);list2.add(2);
+        list2.add(3);
 
     }
 
