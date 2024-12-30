@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false" scan="true" scanPeriod="60 seconds">
+    <logger name="org.apache.kafka.clients" level="info" />
+    <logger name="org.apache.kafka.server" level="info" />
+    <!--输出到控制台-->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.netopstec.mall.service.provider.mapper" level="debug">
+        <appender-ref ref="console" />
+    </logger>
+
+    <root level="debug">
+        <appender-ref ref="console" />
+    </root>
+</configuration>

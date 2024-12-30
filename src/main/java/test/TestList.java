@@ -25,6 +25,8 @@ public class TestList {
       int a = 5;
       int b = 3;
         System.out.println( a + b);
+
+        System.out.println(new ArrayList<Integer>().stream().anyMatch(e -> e >1));
     }
 
     private static void testRetain() {

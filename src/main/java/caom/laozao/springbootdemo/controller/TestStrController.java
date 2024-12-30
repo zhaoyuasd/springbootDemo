@@ -5,7 +5,9 @@ import cn.hutool.core.collection.CollectionUtil;
 import com.liubs.findinstances.jvmti.InstancesOfClass;
 import org.apache.tomcat.util.net.NioEndpoint;
 import org.apache.tomcat.util.threads.ThreadPoolExecutor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.proxy.Enhancer;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,6 +29,7 @@ import java.util.concurrent.TimeUnit;
 @RestController
 public class TestStrController {
     private String info = "info";
+
 
    @RequestMapping("hello")
     public String hello() {

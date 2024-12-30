@@ -5,6 +5,7 @@ import caom.laozao.springbootdemo.entity.User;
 import caom.laozao.springbootdemo.service.OkService;
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,6 +32,7 @@ public class TestController {
         testComponent.testShow();
         return "ok";
     }*/
+
 
     @Autowired
     private RedisTemplate redisTemplate;

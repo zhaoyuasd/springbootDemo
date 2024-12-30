@@ -20,7 +20,18 @@ spring:
     port: 6379
     password: netopstec
     database: 8
-
+  data:
+    elasticsearch:
+      client:
+        rest:
+          uris: https://192.168.0.200:9200 # es的连接地址及端口号
+          username: elastic
+          password: elastic
+          connection-timeout: 10000 # 连接超时时间，单位毫秒
+          socket-timeout: 30000 # 套接字超时时间，单位毫秒
+          max-conn-per-route: 100 # 每个路由的最大连接数
+          max-conn-total: 200 # 总的最大连接
+          use-ssl: true
 mybatis-plus:
   global-config:
     db-config:
