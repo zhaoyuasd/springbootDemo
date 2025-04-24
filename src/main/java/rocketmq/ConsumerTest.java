@@ -22,14 +22,14 @@ public class ConsumerTest {
         // 定义一个pull消费者
         // DefaultLitePullConsumer consumer = new DefaultLitePullConsumer("cg");
         // 定义一个push消费者
-        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("MobianProducer");
+        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("DLQMobianProducer");
         // 指定nameServer
         consumer.setNamesrvAddr("127.0.0.1:9876");
-        consumer.setConsumerGroup("testGroup");
+        consumer.setMaxReconsumeTimes(2);
         // 指定从第一条消息开始消费
         consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
         // 指定消费topic与tag
-        consumer.subscribe("TopicTest", "Tag");
+        consumer.subscribe("%DLQ%MobianProducer", "tag");
 
         // 注册消息监听器
         consumer.registerMessageListener(new MessageListenerConcurrently() {
@@ -42,6 +42,9 @@ public class ConsumerTest {
                 // 逐条消费消息
                 for (MessageExt msg : msgs) {
                     System.out.println(msg);
+                }
+                if (true) {
+                    return ConsumeConcurrentlyStatus.RECONSUME_LATER;
                 }
                 // 返回消费状态：消费成功
                 return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
