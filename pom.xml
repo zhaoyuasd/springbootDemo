@@ -22,11 +22,11 @@
 
     <dependencies>
 
-        <dependency>
+       <!-- <dependency>
             <groupId>org.springframework.security.oauth.boot</groupId>
             <artifactId>spring-security-oauth2-autoconfigure</artifactId>
             <version>2.1.5.RELEASE</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>io.github.liubsyy</groupId>
             <artifactId>FindInstancesOfClass</artifactId>
@@ -286,6 +286,14 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
         </dependency>
+
+
+        <dependency>
+            <groupId>org.apache.rocketmq</groupId>
+            <artifactId>rocketmq-client</artifactId>
+            <version>4.9.3</version>
+        </dependency>
+
 
 
     </dependencies>
