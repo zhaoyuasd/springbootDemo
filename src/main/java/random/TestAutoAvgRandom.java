@@ -17,18 +17,9 @@ import java.util.stream.Collectors;
 
 public class TestAutoAvgRandom {
     public static void main(String[] args) {
-        Integer total = 10000;
-        DbDemo dbDemo128 = new DbDemo(5000, 0, 127, new ArrayList<>());
-        DbDemo dbDemo256 = new DbDemo(4000, 128, 255, new ArrayList<>());
-        DbDemo dbDemo384 = new DbDemo(1000, 256, 383, new ArrayList<>());
-        DbDemo dbDemo512 = new DbDemo(0, 384, 511, new ArrayList<>());
 
-        List<DbDemo> list = new ArrayList<>();
-        list.add(dbDemo128);
-        list.add(dbDemo256);
-        list.add(dbDemo384);
-        list.add(dbDemo512);
-
+        List<DbDemo> list = getDbDemos();
+        int total = list.stream().mapToInt(e -> e.currentCount).sum();
         int length = 1000;
         // 按照已存在的数据 升序排列 从少到对
         long startTime = System.currentTimeMillis();
@@ -80,5 +71,21 @@ public class TestAutoAvgRandom {
         long endTime = System.currentTimeMillis();
         System.out.println("take :"  + (endTime - startTime) / 1000);
         list.forEach(System.out::println);
+    }
+
+    private static List<DbDemo> getDbDemos() {
+        DbDemo dbDemo128 = new DbDemo(5000, 0, 127, new ArrayList<>());
+        DbDemo dbDemo256 = new DbDemo(4000, 128, 255, new ArrayList<>());
+        DbDemo dbDemo384 = new DbDemo(1000, 256, 383, new ArrayList<>());
+        DbDemo dbDemo512 = new DbDemo(0, 384, 511, new ArrayList<>());
+        DbDemo dbDemo640 = new DbDemo(0, 512, 640, new ArrayList<>());
+
+        List<DbDemo> list = new ArrayList<>();
+        list.add(dbDemo128);
+        list.add(dbDemo256);
+        list.add(dbDemo384);
+        list.add(dbDemo512);
+        list.add(dbDemo640);
+        return list;
     }
 }
