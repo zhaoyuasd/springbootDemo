@@ -1,3 +1,5 @@
+package other;
+
 /**
  * @author dongli
  * @create 2025/7/1 17:36

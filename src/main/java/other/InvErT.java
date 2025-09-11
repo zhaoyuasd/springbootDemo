@@ -1,3 +1,5 @@
+package other;
+
 import com.alibaba.excel.annotation.ExcelProperty;
 import lombok.Getter;
 import lombok.Setter;

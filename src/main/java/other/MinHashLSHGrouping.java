@@ -1,3 +1,4 @@
+package other;
 
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;

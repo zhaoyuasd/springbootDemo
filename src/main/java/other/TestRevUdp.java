@@ -1,3 +1,4 @@
+package other;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;

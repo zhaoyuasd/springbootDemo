@@ -18,15 +18,36 @@
         <httpcore_version>4.4.16</httpcore_version>
         <resteasy_version>3.15.6.Final</resteasy_version>
         <jetty_version>9.4.51.v20230217</jetty_version>
+        <zookeeper_version>3.4.6</zookeeper_version>
+        <zkclient_version>0.1</zkclient_version>
+        <zkclient_version>0.1</zkclient_version>
     </properties>
 
     <dependencies>
 
-       <!-- <dependency>
-            <groupId>org.springframework.security.oauth.boot</groupId>
-            <artifactId>spring-security-oauth2-autoconfigure</artifactId>
-            <version>2.1.5.RELEASE</version>
+      <!--  <dependency>
+            <groupId>com.github.sgroschupf</groupId>
+            <artifactId>zkclient</artifactId>
+            <version>${zkclient_version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.zookeeper</groupId>
+            <artifactId>zookeeper</artifactId>
+            <version>${zookeeper_version}</version>
         </dependency>-->
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.13.3</version> <!-- 或更高版本 -->
+        </dependency>
+
+        <!-- <dependency>
+             <groupId>org.springframework.security.oauth.boot</groupId>
+             <artifactId>spring-security-oauth2-autoconfigure</artifactId>
+             <version>2.1.5.RELEASE</version>
+         </dependency>-->
         <dependency>
             <groupId>io.github.liubsyy</groupId>
             <artifactId>FindInstancesOfClass</artifactId>
@@ -106,7 +127,7 @@
 
 
  <!--  dubbo 3.1.8  -->
-        <dependency>
+       <dependency>
             <groupId>org.apache.zookeeper</groupId>
             <artifactId>zookeeper</artifactId>
             <version>3.7.0</version>
@@ -157,7 +178,7 @@
         <dependency>
             <groupId>org.apache.dubbo</groupId>
             <artifactId>dubbo</artifactId>
-            <version>3.1.8</version>
+            <version>3.3.4</version>
             <!--  <version>3.2.2</version>-->
         </dependency>
 
@@ -384,6 +405,13 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>30.1.1-jre</version>
+        </dependency>
+
+        <!-- Sharding-JDBC -->
+        <dependency>
+            <groupId>org.apache.shardingsphere</groupId>
+            <artifactId>sharding-jdbc-spring-boot-starter</artifactId>
+            <version>4.0.0-RC1</version>
         </dependency>
 
 

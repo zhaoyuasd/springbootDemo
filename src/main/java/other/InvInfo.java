@@ -1,3 +1,5 @@
+package other;
+
 import cn.hutool.core.date.DateUtil;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,4 +1,4 @@
-
+package other;
 
 import com.alibaba.fastjson.JSON;
 
