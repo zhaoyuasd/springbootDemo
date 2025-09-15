@@ -1,12 +1,15 @@
 package caom.laozao.springbootdemo.controller;
 
+import caom.laozao.springbootdemo.Mapper.UserMapper;
 import caom.laozao.springbootdemo.TestComponent;
 import caom.laozao.springbootdemo.entity.User;
 import caom.laozao.springbootdemo.service.OkService;
 import com.alibaba.fastjson.JSON;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @desc
  */
 
-//@RestController
+@RestController
 public class TestController {
 
    /* @Autowired
@@ -33,6 +36,8 @@ public class TestController {
         return "ok";
     }*/
 
+    @Autowired
+    private UserMapper userMapper;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -52,6 +57,20 @@ public class TestController {
         System.out.println(str);
         Object ob = redisTemplate.opsForHash().get("map", "map");
         System.out.println(JSON.toJSONString(ob));
+        return "ok";
+    }
+
+    @GetMapping("/insert")
+    public String insert() {
+        User user =new User();
+        user.setUserName("tt");
+        user.setVersion(0);
+        userMapper.insert(user);
+        System.out.println(JSON.toJSONString(user));
+
+        user.setUserName("hahah");
+        userMapper.updateById(user);
+        System.out.println(JSON.toJSONString(user));
         return "ok";
     }
 }

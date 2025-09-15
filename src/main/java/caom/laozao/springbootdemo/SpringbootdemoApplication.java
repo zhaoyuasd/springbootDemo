@@ -1,5 +1,7 @@
 package caom.laozao.springbootdemo;
 
+import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.xxl.job.core.biz.model.ReturnT;
 import com.xxl.job.core.context.XxlJobHelper;
 import com.xxl.job.core.executor.impl.XxlJobSpringExecutor;
@@ -18,6 +20,12 @@ public class SpringbootdemoApplication {
         SpringApplication.run(SpringbootdemoApplication.class, args);
     }
 
+    @Bean
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
+        return interceptor;
+    }
    /* @XxlJob("test")
     public ReturnT<String> test(){
         String param = XxlJobHelper.getJobParam();

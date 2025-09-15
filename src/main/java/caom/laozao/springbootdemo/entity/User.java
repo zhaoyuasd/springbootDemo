@@ -1,6 +1,7 @@
 package caom.laozao.springbootdemo.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.Version;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,4 +18,7 @@ import lombok.Setter;
 public class User {
     private Long id;
     private String userName;
+
+    @Version
+    private Integer version;
 }

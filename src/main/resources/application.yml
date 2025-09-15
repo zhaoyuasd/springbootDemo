@@ -12,9 +12,9 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     # ????????????
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.1.173:3306/test?autoReconnect=true&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
+    url: jdbc:mysql://localhost:3307/test?rewriteBatchedStatements=true&allowMultiQueries=true&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useAffectedRows=true&useSSL=false&allowPublicKeyRetrieval=true
     username: root
-    password: london123
+    password: root
   redis:
     host: 192.168.0.200
     port: 6379
