@@ -18,6 +18,8 @@ import java.util.concurrent.CountDownLatch;
 public class RestProvider {
     public static void main(String[] args) throws InterruptedException {
 
+            System.setProperty("log4j.rootLogger", "debug");
+
             ProviderConfig providerConfig = new ProviderConfig();
             System.setProperty("dubbo.qos.port", "22223");
 
