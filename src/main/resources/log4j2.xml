@@ -3,7 +3,7 @@
     <Appenders>
         <!-- 控制台输出 -->
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="[%d{yyyy-mm-dd HH:mm:ss}] %-5level %c{1} - %msg%n"/>
+            <PatternLayout pattern="%n%X{traceId:-} %X{spanId:-} [%d{yyyy-mm-dd HH:mm:ss}] %-5level %c{1} - %msg%n"/>
         </Console>
     </Appenders>
 

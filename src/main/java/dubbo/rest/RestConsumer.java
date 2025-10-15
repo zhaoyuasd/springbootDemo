@@ -14,7 +14,7 @@ import org.apache.dubbo.rpc.RpcContext;
  */
 
 public class RestConsumer {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         System.setProperty("dubbo.application.logger", "slf4j");
         System.setProperty("dubbo.qos.port", "22223");
         ReferenceConfig<RestService> ref = new ReferenceConfig<>();
@@ -26,7 +26,9 @@ public class RestConsumer {
 
         ref.setTimeout(100000);
         ref.setApplication(new ApplicationConfig("rest-consumer"));
-        ref.setRegistry(new RegistryConfig("zookeeper://127.0.0.1:2188"));
+        RegistryConfig registryConfig =  new RegistryConfig("zookeeper://127.0.0.1:2188");
+        registryConfig.setRegister(false);
+        ref.setRegistry(registryConfig);
         final RestService tripleService = ref.get();
 
         System.out.println("dubbo ref started");
@@ -34,7 +36,10 @@ public class RestConsumer {
         RpcContext.getServerContext().setAttachment("traceId2", "getServerContext");
         RpcContext.getContext().setObjectAttachment("traceId3", "dubbo1234567890");
         RpcContext.getServerContext().setObjectAttachment("traceId4", "getServerContext");
-        String result =  tripleService.sayHello("123");
-        System.out.println(Thread.currentThread().getName() + " result :" + result);
+        for (int i = 0 ; i<100; i++) {
+            String result = tripleService.sayHello("123");
+            System.out.println(Thread.currentThread().getName() + " result :" + result);
+            Thread.sleep(1000*2);
+        }
     }
 }

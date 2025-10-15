@@ -26,14 +26,29 @@ public class NettyClient {
         ExecutorService work =  new NioEventLoopGroup();
         ChannelFactory channelFactory = new NioClientSocketChannelFactory(boss, work);
         bootstrap.setFactory(channelFactory);
+
+        /**
+         *  client3 InternalEncoder connectRequested
+         * client2 InternalEncoder connectRequested
+         * SendHandler connectRequested
+         * client3 InternalEncoder test
+         * client2 InternalEncoder test
+         * SendHandler test
+         * write over
+         * cilent InternalDecoder server_EchoHandler回写：testserver_EchoHandler2222回写：test
+         * cilent2 InternalDecoder server_EchoHandler回写：testserver_EchoHandler2222回写：test
+         */
         bootstrap.setPipelineFactory(() -> {
             ChannelPipeline pipeline = Channels.pipeline();
             pipeline.addLast("decoder", new InternalDecoder("cilent InternalDecoder"));
             pipeline.addLast("SendHandler", new SendHandler());
             pipeline.addLast("handler1", new InternalEncoder("client2 InternalEncoder"));
             pipeline.addLast("handler2", new InternalEncoder("client3 InternalEncoder"));
+            pipeline.addLast("decoder2", new InternalDecoder("cilent2 InternalDecoder"));
             return pipeline;
         });
+        //  client端 down事件 在 pipeline 中 由底部到顶部   client端的write属于 down事件  出站事件  连接也属于出站事件
+        //           up事件   在 pipeline 中 由顶部到底部   server端响应数据    up事件    入站事件
         ChannelFuture ccf = bootstrap.connect(new InetSocketAddress("127.0.0.1", 8888));
         boolean ret = ccf.awaitUninterruptibly(2000, TimeUnit.MILLISECONDS);
         if (!ret || !ccf.isSuccess()) {

@@ -17,7 +17,6 @@ public class RestServiceImpl implements  RestService {
 
         System.out.println(RpcContext.getContext().getObjectAttachment("traceId3"));
         System.out.println(RpcContext.getServerContext().getObjectAttachment("traceId4"));
-        int i = 3 /0;
         return "hello :" + name;
     }
 }

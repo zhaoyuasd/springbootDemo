@@ -29,9 +29,10 @@ public class EchoHandler extends SimpleChannelUpstreamHandler {
             m.getBytes(0, actual);
             String raw =  new String(actual, 0, actual.length);
             System.out.println(name + " " + raw);
-            String echo = "回写：" + raw;
+            String echo = name + "回写：" + raw;
             System.out.println("回写数据：" + echo);
             ctx.getChannel().write(ChannelBuffers.wrappedBuffer(echo.getBytes()));
+            ctx.sendUpstream(event);
         } catch (Exception e) {
             e.printStackTrace();
         }
