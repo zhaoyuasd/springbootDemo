@@ -49,19 +49,20 @@ public class ChatClient {
                     continue;
                 }
                 Iterator<SelectionKey> it = selector.selectedKeys().iterator();
-
+                int i = 0;
                 while (it.hasNext()) {
                     SelectionKey key = it.next();
                     it.remove();
+                    i ++;
                     if(key.isWritable()){
-                        System.out.println("isWritable");
+                        System.out.println("isWritable " + i);
                         handleWrite(key);
                         key.interestOps(key.interestOps()&~SelectionKey.OP_WRITE);
                         // key.selector().wakeup();
                     }
 
                     if(key.isReadable()){
-                        System.out.println("isReadable");
+                        System.out.println("isReadable " + i);
                         handleRead(key);
                         // HandleRead.handleRead(key);
                     }

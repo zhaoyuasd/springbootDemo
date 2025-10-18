@@ -138,6 +138,7 @@ public class ChatServer {
                 }
 
                 // 1. 首先读取头部整数
+                System.out.println("if byteBuffer.remaining() " + byteBuffer.remaining());
                 if (byteBuffer.remaining() >= 4) {
                     msg.setInfoLength(byteBuffer.getInt());
                     msg.setCurrentDeal(false);
@@ -149,6 +150,7 @@ public class ChatServer {
                 }
                 System.out.println("infoLength:" + msg.getInfoLength());
                 //2. 进入循环 每次验证剩余的是否够一个包 不够则进行读取
+                System.out.println("  while byteBuffer.remaining() " + byteBuffer.remaining());
                 while (byteBuffer.remaining() >= msg.getInfoLength()) {
                     byte[] info = new byte[msg.getInfoLength()];
                     byteBuffer.get(info);

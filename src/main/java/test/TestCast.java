@@ -21,7 +21,9 @@ public class TestCast {
     }
 
     public static void main(String[] args) {
-        testCast();
+       // testCast();
+        Integer ss= null;
+        System.out.printf("asdasd %s", ss);
     }
 
 
