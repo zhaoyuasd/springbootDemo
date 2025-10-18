@@ -39,7 +39,7 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
-management.endpoints.web.exposure.include: *
+management.endpoints.web.exposure.include: "*"
 management.metrics.export.influx.enabled: true
 management.metrics.export.influx.uri: http://localhost:8086
 management.metrics.export.influx.org: my-org

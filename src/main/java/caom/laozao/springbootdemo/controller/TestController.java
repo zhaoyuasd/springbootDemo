@@ -4,11 +4,13 @@ import caom.laozao.springbootdemo.Mapper.UserMapper;
 import caom.laozao.springbootdemo.TestComponent;
 import caom.laozao.springbootdemo.entity.User;
 import caom.laozao.springbootdemo.service.OkService;
+import caom.laozao.springbootdemo.service.ThrowErrorService;
 import com.alibaba.fastjson.JSON;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,6 +37,10 @@ public class TestController {
         testComponent.testShow();
         return "ok";
     }*/
+
+
+    @Autowired
+    private ThrowErrorService throwErrorService;
 
     @Autowired
     private UserMapper userMapper;
@@ -71,6 +77,19 @@ public class TestController {
         user.setUserName("hahah");
         userMapper.updateById(user);
         System.out.println(JSON.toJSONString(user));
+        return "ok";
+    }
+
+    @GetMapping("tr")
+    @Transactional
+    public String  rollbackOnly() {
+        try {
+            throwErrorService.insertError();
+            throwErrorService.insertError2();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return "ok";
     }
 }
