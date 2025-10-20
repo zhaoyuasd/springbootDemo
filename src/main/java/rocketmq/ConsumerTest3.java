@@ -43,7 +43,8 @@ public class ConsumerTest3 {
                                                             ConsumeConcurrentlyContext context) {
                 // 逐条消费消息
                 for (MessageExt msg : msgs) {
-                    System.out.println(name + "-->" +msg);
+                    byte[] b = msg.getBody();
+                    System.out.println(name + "-->" +new String(b, 0, b.length) + " queueId:" + msg.getQueueId());
                 }
                 // 返回消费状态：消费成功
                 return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;

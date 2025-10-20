@@ -349,9 +349,15 @@
             <version>4.9.3</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.rocketmq</groupId>
+            <artifactId>rocketmq-remoting</artifactId>
+            <version>4.9.3</version>
+        </dependency>
 
 
-            <!-- Guava for hashing functions -->
+
+        <!-- Guava for hashing functions -->
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>

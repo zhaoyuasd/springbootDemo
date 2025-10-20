@@ -25,8 +25,8 @@ public class ProducerTest {
         producer.start();
 
         // 生产并发送100条消息
-        while (true) {
-            for (int i = 0; i < 1; i++) {
+
+            for (int i = 0; i < 10000; i++) {
                 byte[] body = ("Hi," + i).getBytes();
                 Message msg = new Message("TopicTest", "Tag", body);
                 // 为消息指定key
@@ -34,9 +34,10 @@ public class ProducerTest {
                 // 同步发送消息
                 SendResult sendResult = producer.send(msg);
                 System.out.println(sendResult);
+                Thread.sleep(100 * 5);
             }
-            Thread.sleep(1000 * 5);
-        }
+
+
         // 关闭producer
     }
 }

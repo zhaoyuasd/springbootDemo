@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * @author dongli
  * @create 2025/4/24 10:15
- * @desc
+ * @desc  消费者支持动态加入 退出  topic对应的queue会进行分配
  */
 
 public class ConsumerTest2 {
@@ -43,7 +43,8 @@ public class ConsumerTest2 {
                                                             ConsumeConcurrentlyContext context) {
                 // 逐条消费消息
                 for (MessageExt msg : msgs) {
-                    System.out.println(name + "-->" +msg);
+                    byte[] b = msg.getBody();
+                    System.out.println(name + "-->" +new String(b, 0, b.length) + " queueId:" + msg.getQueueId());
                 }
                 // 返回消费状态：消费成功
                 return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
