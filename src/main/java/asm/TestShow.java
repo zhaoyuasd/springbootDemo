@@ -1,6 +1,5 @@
 package asm;
 
-import istio.v1.auth.Ca;
 import org.objectweb.asm.util.ASMifier;
 
 import java.io.IOException;

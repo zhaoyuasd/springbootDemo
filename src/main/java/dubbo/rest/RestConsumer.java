@@ -7,6 +7,9 @@ import org.apache.dubbo.config.ReferenceConfig;
 import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.rpc.RpcContext;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author dongli
  * @create 2023/7/12 11:33
@@ -29,6 +32,11 @@ public class RestConsumer {
         RegistryConfig registryConfig =  new RegistryConfig("zookeeper://127.0.0.1:2188");
         registryConfig.setRegister(false);
         ref.setRegistry(registryConfig);
+
+        Map<String, String> params = new HashMap<>();
+        params.put("serialization", "kyro");
+        ref.setParameters(params);
+
         final RestService tripleService = ref.get();
 
         System.out.println("dubbo ref started");
@@ -37,7 +45,7 @@ public class RestConsumer {
         RpcContext.getContext().setObjectAttachment("traceId3", "dubbo1234567890");
         RpcContext.getServerContext().setObjectAttachment("traceId4", "getServerContext");
         for (int i = 0 ; i<100; i++) {
-            String result = tripleService.sayHello("123");
+            String result = tripleService.sayHello(new RpcRequest("name :" + i, "age:" +i));
             System.out.println(Thread.currentThread().getName() + " result :" + result);
             Thread.sleep(1000*2);
         }

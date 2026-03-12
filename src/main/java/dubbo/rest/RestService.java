@@ -1,5 +1,6 @@
 package dubbo.rest;
 
+
 /**
  * @author dongli
  * @create 2023/7/12 11:31
@@ -7,5 +8,5 @@ package dubbo.rest;
  */
 
 public interface RestService {
-    String sayHello(String name);
+    String sayHello(RpcRequest request);
 }

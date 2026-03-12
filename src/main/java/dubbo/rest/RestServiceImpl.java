@@ -10,13 +10,13 @@ import org.apache.dubbo.rpc.RpcContext;
 
 public class RestServiceImpl implements  RestService {
     @Override
-    public String sayHello(String name) {
-        System.out.println(Thread.currentThread().getName() + " call :" + name);
+    public String sayHello(RpcRequest request) {
+        System.out.println(Thread.currentThread().getName() + " call :" + request);
         System.out.println(RpcContext.getContext().getAttachment("traceId1"));
         System.out.println(RpcContext.getServerContext().getAttachment("traceId2"));
 
         System.out.println(RpcContext.getContext().getObjectAttachment("traceId3"));
         System.out.println(RpcContext.getServerContext().getObjectAttachment("traceId4"));
-        return "hello :" + name;
+        return "hello :" + request;
     }
 }

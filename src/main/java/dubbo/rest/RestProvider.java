@@ -30,6 +30,7 @@ public class RestProvider {
             service.setRef(new RestServiceImpl());
             service.setProtocol(new ProtocolConfig("dubbo", 50051));
             service.setRegistry(new RegistryConfig("zookeeper://127.0.0.1:2188"));
+          //  service.setSerialization("fastjson2");
             System.out.println("rest dubbo service started  111" );
             service.export();
             System.out.println("rest dubbo service started 222");
