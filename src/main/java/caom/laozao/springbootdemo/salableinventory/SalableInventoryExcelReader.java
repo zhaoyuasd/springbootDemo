@@ -21,7 +21,7 @@ public class SalableInventoryExcelReader {
         String frisoUrl="https://rmsedi.rfc-friso.com/pushDataApi/stock";
         String filePath = args != null && args.length > 0 ? args[0] : DEFAULT_FILE_PATH;
         List<SalableInventoryExcel> excels = read(filePath);
-        System.out.println("读取条数: " + data.size());
+        System.out.println("读取条数: " + excels.size());
        // data.forEach(row -> System.out.println(JSON.toJSONString(row)));
         List<StockReport> stockReportList = convert2Stock(excels);
         Map<String, Object> params = new HashMap<>();
