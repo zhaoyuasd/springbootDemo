@@ -6,6 +6,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Salable inventory Excel reader.
@@ -13,23 +14,29 @@ import java.util.*;
 public class SalableInventoryExcelReader {
 
     private static final String DEFAULT_FILE_PATH =
-            "D:/dependency/E管家测试环境_Ver3.7.5_20260205/"
-                    + "20260419_friso_with_snapshot_SalableInventory.xlsx";
-
+            "C:/Users/dongli/OneDrive/文档/friso/";
+    private static final  String frisoUrl="https://rmsedi.rfc-friso.com/pushDataApi/stock";
     public static void main(String[] args) throws Exception {
 
-        String frisoUrl="https://rmsedi.rfc-friso.com/pushDataApi/stock";
-        String filePath = args != null && args.length > 0 ? args[0] : DEFAULT_FILE_PATH;
-        List<SalableInventoryExcel> excels = read(filePath);
-        System.out.println("读取条数: " + excels.size());
-       // data.forEach(row -> System.out.println(JSON.toJSONString(row)));
+       // postFile("20260418_friso_with_snapshot_SalableInventory.xlsx");
+
+        postFile("20260420_friso_with_snapshot_SalableInventory.xlsx");
+
+    }
+
+    private static void postFile(String fileName) throws Exception {
+
+        List<SalableInventoryExcel> excels = read(DEFAULT_FILE_PATH + fileName);
+        excels = excels.stream().filter(e -> !Objects.equals(e.getStoreName(), "小红书")).collect(Collectors.toList());
+        System.out.println("读取条数: " + excels.size() + " " + fileName);
+        excels.forEach(row -> System.out.println(JSON.toJSONString(row)));
         List<StockReport> stockReportList = convert2Stock(excels);
         Map<String, Object> params = new HashMap<>();
         params.put("kaName", FrisoPushDataConstants.KA_NAME);
         params.put("token", FrisoPushDataConstants.STOCK_TOKEN);
         params.put("data", stockReportList);
         FrisoHttpUtil.FrisoResponse frisoResponse = FrisoHttpUtil.execute(frisoUrl, params);
-
+        System.out.println("推送结果：" +  JSON.toJSONString(frisoResponse));
     }
 
     public static List<SalableInventoryExcel> read(String filePath) {
@@ -46,7 +53,11 @@ public class SalableInventoryExcelReader {
                 StockReport stockReport = new StockReport();
                 stockReport.setBrand(StringUtils.isNotEmpty(excel.getBrands()) ? excel.getBrands() : "未知");
                 stockReport.setStockDate(excel.getDate());
-                stockReport.setStoreCode(excel.getStoreCode());
+                if (Objects.equals("73261", excel.getStoreCode())) {
+                    stockReport.setStoreCode("00073261");
+                } else {
+                    stockReport.setStoreCode(excel.getStoreCode());
+                }
                 stockReport.setStoreName(excel.getStoreName());
                 stockReport.setProductCode(excel.getSkuNo());
                 stockReport.setProductName(excel.getProductName());

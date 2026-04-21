@@ -1,12 +1,10 @@
 package caom.laozao.springbootdemo.salableinventory;
 
-import com.netopstec.erp.common.constants.Constants;
-import com.netopstec.erp.common.enums.ErrorCode;
-import com.netopstec.erp.common.exception.BaseException;
 import lombok.AccessLevel;
 import lombok.Cleanup;
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.collections.CollectionUtils;
@@ -28,7 +26,7 @@ import java.util.zip.GZIPOutputStream;
  * Created by sanze on 2016/12/22.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-@Log4j
+@Slf4j
 public final class CommonUtils {
 
     /**
@@ -94,59 +92,8 @@ public final class CommonUtils {
      * @param secret 密钥，调用登录接口返回的session，第三方则是AppSecret
      * @return 签名字符串 string
      */
-    public static String generateSign(Object obj, String secret) throws Exception {
-        String signString = initSignString(obj, secret);
-        //MD5加密
-        return MD5Utils.getMd5(signString);
-    }
 
-    public static String initSignString(Object obj, String secret) throws Exception {
-        Map<String, String> map = new HashMap<>();
-        try {
-            map = BeanUtils.describe(obj);
-        } catch (Exception e) {
-            log.error("error in CommonUtils --> generateSign: ", e);
-        }
-        if (!map.containsKey(Constants.SIGN_APPKEY)) {
-            throw new BaseException(ErrorCode.KEY_108, String.format("缺少必要参数%s", Constants.SIGN_APPKEY));
-        }
-        if (!map.containsKey(Constants.SIGN_TIMESTAMP)) {
-            throw new BaseException(ErrorCode.KEY_108, String.format("缺少必要参数%s", Constants.SIGN_TIMESTAMP));
-        }
-        if (!map.containsKey(Constants.SIGN_VER)) {
-            throw new BaseException(ErrorCode.KEY_108, String.format("缺少必要参数%s", Constants.SIGN_VER));
-        }
-        Date timestamp;
-        try {
-            timestamp = new Date(Long.valueOf(map.get(Constants.SIGN_TIMESTAMP)));
-        } catch (Exception ex) {
-            throw new BaseException(ErrorCode.KEY_108, String.format("参数%s无效", Constants.SIGN_TIMESTAMP));
-        }
-        Date now = new Date();
-        if (timestamp.getTime() < now.getTime() - 300000 || timestamp.getTime() > now.getTime() + 300000) {
-            log.error(String.format("客户端与服务端时间误差超过5分钟, %s request timestamp is %s", map.get(Constants.SIGN_APPKEY), DateTimeUtils.getDateString(timestamp)));
-            throw new BaseException(ErrorCode.KEY_108, "客户端与服务端时间误差超过5分钟");
-        }
-//        if(!Objects.equals(Constants.SIGN_VER_VALUE, map.get(Constants.SIGN_VER))){
-//            throw new BaseException(ErrorCode.KEY_108, String.format("客户端与服务端的版本不一致", Constants.SIGN_VER));
-//        }
-        //删除生成的class键值对
-        map.remove("class");
-        //删除sign键值对
-        map.remove("sign");
-        //删除jdDecryptLog键值对
-        map.remove("jdDecryptLog");
-        List<String> keyList = new ArrayList<>(map.keySet());
-        //按照首字母顺序排序
-        Collections.sort(keyList, (o1, o2) -> o1.compareToIgnoreCase(o2));
-        StringBuilder sb = new StringBuilder();
-        sb.append(secret);
-        for (String key : keyList) {
-            sb.append(key).append("=").append(map.get(key));
-        }
-        sb.append(secret);
-        return sb.toString();
-    }
+
 
     /**
      * 生成签名（云集）
@@ -353,51 +300,6 @@ public final class CommonUtils {
         return smsCode.toString();
     }
 
-    /**
-     * 比较对象属性值的差异，并记录成字符串
-     *
-     * @param oldObj 原对象
-     * @param newObj 新对象
-     * @param clazz  对象类型
-     * @param <T>
-     * @return 返回差异字符串，如果没有差异，则返回空字符串，如果对象没有属性则返回null
-     * @throws Exception
-     */
-    public static <T> String getObjectDiffString(T oldObj, T newObj, Class<T> clazz) throws Exception {
-        String result = null;
-        List<Field> fields = FieldUtils.getAllFieldsList(clazz);
-        if (CollectionUtils.isNotEmpty(fields)) {
-            StringBuilder sb = new StringBuilder();
-            for (Field field : fields) {
-                String name = field.getName();
-                if ("serialVersionUID".equals(field.getName())) {
-                    continue;
-                }
-                try {
-                    Object o1 = FieldUtils.readDeclaredField(oldObj, name, true);
-                    Object o2 = FieldUtils.readDeclaredField(newObj, name, true);
-                    /*
-                     * BigDecimal类型不能直接用equals比较，equals比较会连精度也一起比较
-                     * Date类型的equals比较是比较getTime()方法的值
-                     * */
-                    if (clazz == BigDecimal.class) {
-                        BigDecimal b1 = (BigDecimal) o1;
-                        BigDecimal b2 = (BigDecimal) o2;
-                        if (b1.compareTo(b2) != 0) {
-                            sb.append(name).append(Constants.COLON).append(o1).append(Constants.TO).append(o2).append(Constants.SEMICOLON);
-                        }
-                    } else if (!Objects.equals(o1, o2)) {
-                        sb.append(name).append(Constants.COLON).append(o1).append(Constants.TO).append(o2).append(Constants.SEMICOLON);
-                    }
-                } catch (IllegalAccessException e) {
-                    log.error("error in CommonUtils --> getObjectDiffString: ", e);
-                    throw e;
-                }
-            }
-            result = sb.toString();
-        }
-        return result;
-    }
 
     /**
      * 将Integer转化为boolean
@@ -428,30 +330,7 @@ public final class CommonUtils {
      * @param e
      * @param filePath
      */
-    public static void saveExceptionLog(Exception e, String filePath) {
-        if (newFolder(filePath)) {
-            Date now = new Date();
-            StringBuffer content = new StringBuffer("时间 ");
-            content.append(" ").append(DateTimeUtils.getDateString(now)).append(" 捕获异常 ").append(e.toString()).append("\r\n");
-            StackTraceElement[] stackTraceElements = e.getStackTrace();
-            if (e instanceof BaseException) {
-                content.append(((BaseException) e).getErrMsg());
-            }
-            if (stackTraceElements != null && stackTraceElements.length > 0) {
-                for (StackTraceElement stackTraceElement : stackTraceElements) {
-                    content.append(stackTraceElement.toString()).append("\r\n");
-                }
-            } else if (StringUtils.isNotEmpty(e.getMessage())) {
-                content.append(e.getMessage());
-            } else {
-                content.append(e);
-            }
-            String toFileName = filePath + "ExceptionReport_" + DateTimeUtils.getDateFormatString(now, "yyyy-MM-dd") + ".log";
-            saveFile(content.toString(), toFileName);
-        } else {
-            log.error("error in CommonUtils ===> saveExceptionLog:文件夹不存在" + filePath);
-        }
-    }
+
 
     /**
      * 记录文本日志
@@ -459,9 +338,7 @@ public final class CommonUtils {
      * @param txt
      * @param filePath
      */
-    public static void saveTxtLog(String txt, String filePath) {
-        saveTxtLog(txt, filePath, "Txt");
-    }
+
 
     /**
      * 记录文本日志，指定文件名
@@ -470,17 +347,7 @@ public final class CommonUtils {
      * @param filePath
      * @param fileName
      */
-    public static void saveTxtLog(String txt, String filePath, String fileName) {
-        if (newFolder(filePath)) {
-            Date now = new Date();
-            StringBuffer content = new StringBuffer("时间 ");
-            content.append(" ").append(DateTimeUtils.getDateString(now)).append(" ").append(txt);
-            String toFileName = filePath + fileName + "_" + DateTimeUtils.getDateFormatString(now, "yyyy-MM-dd") + ".log";
-            saveFile(content.toString(), toFileName);
-        } else {
-            log.error("error in CommonUtils ===> saveTxtLog:文件夹不存在" + filePath);
-        }
-    }
+
 
     public static void saveFile(String content, String toFileName) {
         BufferedWriter bw = null;
@@ -572,16 +439,7 @@ public final class CommonUtils {
      * @param separator
      * @return
      */
-    public static String interceptIndex (String source, String separator) {
-        if (StringUtils.isEmpty(source) || StringUtils.isEmpty(separator)) {
-            throw new BaseException(ErrorCode.KEY_5, "文本或分割符传入为空");
-        }
-        if (!source.contains(separator)) {
-            throw new BaseException(ErrorCode.KEY_5, "文本中不含有分割符，不可分割");
-        }
-        StringTokenizer st = new StringTokenizer(source, separator);
-        return st.nextToken();
-    }
+
 
 
 //    public static void main(String[] args) throws Exception {
