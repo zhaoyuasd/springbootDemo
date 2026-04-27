@@ -12,4 +12,8 @@ public class Person {
 
    private Integer currentFloor;
 
+   private Integer targetFloor;
+
+
+
 }

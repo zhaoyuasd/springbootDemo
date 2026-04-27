@@ -21,85 +21,64 @@ public class Building {
 
     private final List<Elevator> elevators = new ArrayList<>();
 
-    // 需要分发的命令
-    private volatile FloorRequest requestTail = null;
-
-    private volatile FloorRequest requestHead = null;
+    private Floor[] floors;
 
 
-    private void dispatchRequest() {
-        for(; ;) {
-            if (requestHead == null) {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+    private MyQueue<FloorRequest> queue = new MyQueue<>();
+
+    public void addElevator(Elevator elevator) {
+        elevators.add(elevator);
+    }
+
+    public void setFloors(Floor[] floors) {
+        this.floors = floors;
+    }
+
+    private void dispatchDownRequest() {
+      for (;;) {
+          try {
+              FloorRequest request = queue.popTask();
+              if (!dutyRequest(request, elevators)) {
+                  queue.addTask(request);
+              }
+          } catch (Exception e) {
+              throw new RuntimeException(e);
+          }
+      }
+    }
+
+    private boolean dutyRequest(FloorRequest request, List<Elevator> elevators) {
+        for (Elevator elevator : elevators) {
+            if (elevator.dutyRequest(request.targetFloor, request.moveForward, request.getFloor())) {
+                return true;
             }
-           while (requestHead != null) {
-               FloorRequest request = requestHead;
-               boolean deal = false;
-               for (Elevator elevator : elevators) {
-                   if (elevator.dutyRequest(request.targetFloor, request.moveForward)) {
-                       deal = true;
-                       break;
-                   }
-               }
-               if (deal) {
-                   requestHead = request.next;
-               } else {
-                   // 失败修改放到队尾
-                   updateTailRequest(request);
-               }
-               request.next = null;
-           }
-
         }
+        return false;
     }
 
 
-    public synchronized void sendUpRequest(Integer floor) {
-       if (requestTail == null) {
-           FloorRequest request = new FloorRequest();
-           request.moveForward = 1;
-           request.targetFloor = floor;
-           initFloor(request);
-       } else {
-           addFloorRequest(1, floor);
-       }
-    }
-
-    private void initFloor(FloorRequest request) {
-        requestTail = request;
-        requestHead = request;
-    }
-
-    private void addFloorRequest(int moveForward, Integer floor) {
+    public  void sendUpRequest(Integer floor, Floor flo) {
         FloorRequest request = new FloorRequest();
-        request.moveForward = moveForward;
+        request.moveForward = 1;
         request.targetFloor = floor;
-        updateTailRequest(request);
+        request.floor = flo;
+        queue.addTask(request);
     }
 
-    private synchronized void updateTailRequest(FloorRequest request) {
-        if (requestTail == null) {
-            initFloor(request);
-            return;
-        }
-        requestTail.next = request;
-        requestTail = request;
+
+
+
+
+
+    public  void sendDownRequest(Integer floor, Floor flo) {
+        FloorRequest request = new FloorRequest();
+        request.moveForward = -1;
+        request.targetFloor = floor;
+        request.floor = flo;
+        queue.addTask( request);
     }
 
-    public synchronized void sendDownRequest(Integer floor) {
-        if (requestTail == null) {
-            FloorRequest request = new FloorRequest();
-            request.moveForward = -1;
-            request.targetFloor = floor;
-            initFloor(request);
-        } else {
-            addFloorRequest(-1, floor);
-        }
-    }
+
 
 
     @Getter
@@ -107,5 +86,6 @@ public class Building {
         FloorRequest next;
         Integer moveForward;
         Integer targetFloor;
+        Floor floor;
     }
 }
