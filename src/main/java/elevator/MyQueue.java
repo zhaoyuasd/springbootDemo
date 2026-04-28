@@ -9,8 +9,6 @@ package elevator;
 
 public class MyQueue<T> {
 
-    private volatile int taskCount;
-
     private volatile Task header = null;
 
     private volatile Task tail = null;
@@ -24,12 +22,12 @@ public class MyQueue<T> {
         } else {
                 Task task = new Task();
                 task.ob = ob;
-                header.next = task;
-                taskCount ++ ;
+                tail.next = task;
+                tail = task;
         }
-        taskCount++ ;
         if (empty) {
             notify();
+            empty = false;
         }
     }
 
@@ -38,9 +36,9 @@ public class MyQueue<T> {
             empty = true;
             wait();
         }
-        Task tmp = header;
+        T t= header.ob;
         header = header.next;
-        return tmp.ob;
+        return t;
     }
 
 

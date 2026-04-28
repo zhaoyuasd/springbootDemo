@@ -23,24 +23,38 @@ public class Building {
 
     private Floor[] floors;
 
-
     private MyQueue<FloorRequest> queue = new MyQueue<>();
+
+    private MyQueue<FloorRequest> queueDispatch = new MyQueue<>();
 
     public void addElevator(Elevator elevator) {
         elevators.add(elevator);
     }
 
-    public void setFloors(Floor[] floors) {
-        this.floors = floors;
-    }
+    private void postTask() {
+        System.out.println("Buding开始分发工作");
+        LockCutDown.finish();
 
+        for (;;) {
+            try {
+                FloorRequest request = queueDispatch.popTask();
+                if (!dutyRequest(request, elevators)) {
+                    // 失败重新入队
+                    queue.addTask(request);
+                }
+                Thread.sleep(500);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
     private void dispatchDownRequest() {
+      System.out.println("Buding开始 投递 工作");
+        LockCutDown.finish();
       for (;;) {
           try {
-              FloorRequest request = queue.popTask();
-              if (!dutyRequest(request, elevators)) {
-                  queue.addTask(request);
-              }
+              queueDispatch.addTask(queue.popTask());
+              Thread.sleep(500);
           } catch (Exception e) {
               throw new RuntimeException(e);
           }
@@ -65,12 +79,15 @@ public class Building {
         queue.addTask(request);
     }
 
+    public void sendDownRequest(Integer targetFloor) {
+        FloorRequest request = new FloorRequest();
+        request.moveForward = -1;
+        request.targetFloor = targetFloor;
+        request.floor = floors[targetFloor - MIN_FLOOR];
+        queue.addTask( request);
+    }
 
-
-
-
-
-    public  void sendDownRequest(Integer floor, Floor flo) {
+    public void sendDownRequest(Integer floor, Floor flo) {
         FloorRequest request = new FloorRequest();
         request.moveForward = -1;
         request.targetFloor = floor;
@@ -78,6 +95,26 @@ public class Building {
         queue.addTask( request);
     }
 
+
+    public void sendUpRequest(Integer targetFloor) {
+        FloorRequest request = new FloorRequest();
+        request.moveForward = 1;
+        request.targetFloor = targetFloor;
+        request.floor = floors[targetFloor - MIN_FLOOR];
+        queue.addTask(request);
+    }
+
+
+    public void start() {
+        new Thread(this::dispatchDownRequest).start();
+        new Thread(this::postTask).start();
+    }
+
+
+
+    public void setFloors(Floor[] floors) {
+        this.floors = floors;
+    }
 
 
 

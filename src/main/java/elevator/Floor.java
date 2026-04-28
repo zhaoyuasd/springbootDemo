@@ -2,6 +2,7 @@ package elevator;
 
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -13,11 +14,13 @@ import java.util.List;
 
 public class Floor {
 
-    public  final Integer floor;
+    public final Integer floor;
 
     private final Building building;
 
-    private List<Person> intoEle = new ArrayList<>();
+    private List<Person> intoUpEle = new ArrayList<>();
+
+    private List<Person> intoDownEle = new ArrayList<>();
 
     public Floor(Integer floor, Building building) {
         this.floor = floor;
@@ -30,16 +33,49 @@ public class Floor {
             throw new RuntimeException("你要上天？");
         }
         building.sendUpRequest(floor, this);
-        intoEle.add(person);
+        intoUpEle.add(person);
     }
 
-    public void goDown() {
+    public void goDown(Person person) {
         if (floor <= Building.MIN_FLOOR) {
             throw new RuntimeException("你要下地？");
         }
         building.sendDownRequest(floor, this);
-
+        intoDownEle.add(person);
     }
 
+
+    public void peopleIn(Elevator elevator) {
+
+        // 底层或者顶层 人都是直接进入
+        if (floor.intValue() == Building.MIN_FLOOR || floor == Building.MAX_FLOOR - 1) {
+            intoDownEle.forEach(elevator::peopleIn);
+            intoDownEle.clear();
+            intoUpEle.forEach(elevator::peopleIn);
+            intoUpEle.clear();
+            return;
+        }
+
+        Iterator<Person> it ;
+        if (elevator.getMoveForward() == -1) {
+            it = intoDownEle.iterator();
+            while (it.hasNext()) {
+                Person p = it.next();
+                it.remove();
+                elevator.peopleIn(p);
+            }
+        } else {
+            it = intoUpEle.iterator();
+            while (it.hasNext()) {
+                Person p = it.next();
+                it.remove();
+                elevator.peopleIn(p);
+            }
+        }
+
+
+
+
+    }
 
 }
