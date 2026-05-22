@@ -69,7 +69,7 @@ public class Building {
 
 
     public void setFloors(Floor[] floors) {
-        this.floors = floors;
+       // this.floors = floors;
     }
 
 

@@ -50,7 +50,7 @@ public class Person {
         if (currentFloor > targetFloor) {
             building.sendDownRequest(targetFloor);
         } else {
-            building.sendUpRequest(targetFloor);
+            //building.sendUpRequest(targetFloor);
         }
     }
 }

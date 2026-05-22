@@ -117,7 +117,7 @@ public class Elevator {
         System.out.printf("运行方向:%s 当前楼层:%d \n\r", getForward(), currentFloor);
         Floor floor = toStopFloors[i - Building.MIN_FLOOR];
         if (floor != null) {
-            floor.peopleIn(this);
+           // floor.peopleIn(this);
             peopleOut();
             downStopCount();
             toStopFloors[i - Building.MIN_FLOOR] = null;
