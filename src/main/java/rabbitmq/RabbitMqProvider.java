@@ -44,7 +44,13 @@ public class RabbitMqProvider {
             }
         });
 
-        String tag = "SalesOrder:";
+        String body ="{\"address\":\"~MtvWMV0i6g5ALVl1Zn3z/d8w9xL3WAGvpcfBoiSdQmC8z+WBEgM/yplOZ+SexiXjiubtNSqmOZmiKA/FSoA1eQ==~netopsToDecrypt~\",\"brandId\":\"friso\",\"buyTime\":1778299697000,\"buyerMemo\":\"妈妈粉派样\",\"chnId\":7987746760728529660,\"chnModified\":1778299697000,\"cityName\":\"成都市\",\"code\":\"E000037479699\",\"costCenter\":\"Sales-SMKT-NU-Newer\",\"costMoney\":0,\"countyName\":\"武侯区\",\"createBy\":\"\",\"createTime\":1778299697000,\"custNick\":\"~3uItUYEQ3d3H2gdrRNTk+w==~netopsToDecrypt~\",\"custNickMD5\":\"3e76431ca31d6eb9663b511fcd171f38\",\"deleted\":0,\"deliveryCost\":0,\"deliveryFee\":0,\"deliveryStatus\":1,\"deliveryStatusName\":\"等待发货\",\"discountFee\":0,\"hasAudit\":0,\"hasBuyerMemo\":0,\"hasExChg\":0,\"hasInteriorMemo\":0,\"hasMerge\":0,\"hasPrintInvoice\":0,\"hasRefund\":0,\"hasSellerMemo\":0,\"isCod\":0,\"isDoMerge\":0,\"isHold\":0,\"isNeedInvoice\":0,\"mergeFields\":\"a137dfe5209766190d8e7cd2c7a1deb2\",\"orderFrom\":2,\"orderFromName\":\"渠道同步\",\"orderMoney\":0,\"paidStatus\":3,\"paidStatusName\":\"全额付款\",\"payTime\":1778299697000,\"payedMoney\":0,\"planSendDate\":1778299697000,\"platType\":\"FRISO_FREE_GOODS\",\"provName\":\"四川省\",\"receivedPayment\":0,\"recvMobile\":\"$185$gCtBn0HTiGEK3L0fvHbGAA==$netopsToDecrypt$\",\"recvMobileMD5\":\"4e475813e9ab1935e6700f5641207ec9\",\"recvName\":\"~3uItUYEQ3d3H2gdrRNTk+w==~netopsToDecrypt~\",\"recvNameMD5\":\"3e76431ca31d6eb9663b511fcd171f38\",\"recvPhone\":\"~esrOL15uvBbW0N8x+NGHXQ==~netopsToDecrypt~\",\"recvPhoneMD5\":\"4e475813e9ab1935e6700f5641207ec9\",\"salesOrderItemList\":[{\"initSalesOrderItemParam\":{\"hasRefund\":0,\"isOnlinePackItem\":0,\"qty\":1,\"salesPrice\":0,\"skuNo\":\"8716200779210_NU\"}}],\"sellerMemo\":\"\",\"stockId\":2769984222170009232,\"stockName\":\"美素SMKT-NU-招新仓\",\"topTids\":\"gl_24044833\",\"version\":1778299697000,\"zipCode\":\"000000\"}";
+        channel.basicPublish("", QUEUE_NAME, null, body.getBytes("UTF-8"));
+
+
+        
+
+       /* String tag = "SalesOrder:";
         String filePath = "C:\\Users\\dongli\\OneDrive\\Desktop\\frisoOrder.txt";
         BufferedReader reader = new BufferedReader(
                 new InputStreamReader(
@@ -63,7 +69,7 @@ public class RabbitMqProvider {
             channel.basicPublish("", QUEUE_NAME, null, line.getBytes("UTF-8"));
             System.out.println("over:" + line);
             line = reader.readLine();
-        }
+        }*/
 
 
         // 开启发布确认模式

@@ -12,9 +12,9 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     # ????????????
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3307/test?rewriteBatchedStatements=true&allowMultiQueries=true&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useAffectedRows=true&useSSL=false&allowPublicKeyRetrieval=true
-    username: root
-    password: root
+    url: jdbc:mysql://192.168.1.24:3308/test?rewriteBatchedStatements=true&allowMultiQueries=true&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useAffectedRows=true&useSSL=false&allowPublicKeyRetrieval=true
+    username: erp_dev
+    password: erp_dev
   redis:
     host: 192.168.0.200
     port: 6379
