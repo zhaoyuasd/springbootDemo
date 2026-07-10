@@ -17,12 +17,15 @@ public class TestString {
             System.out.println(item);
         }*/
 
-        String skuSet = "qweqe**23";
+     /*   String skuSet = "qweqe**23";
         int index =  skuSet.lastIndexOf("*");
         String skuNo = skuSet.substring(0, index);
         String num = skuSet.substring(index + 1);
 
         System.out.println(skuNo);
-        System.out.println(num);
+        System.out.println(num);*/
+
+        String aa = null;
+        System.out.println(aa + "_" + "asdasd");
     }
 }
